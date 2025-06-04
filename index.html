@@ -3,236 +3,274 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Encuesta de Utilidad</title>
+    <title>Formulario de opinión</title>
     <style>
         /* Estilos generales del cuerpo del documento */
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            line-height: 1.6;
-            margin: 0;
-            padding: 0;
-            background-color: #f8f9fa; /* Un fondo gris claro */
-            color: #343a40; /* Color de texto principal oscuro */
+            font-family: 'Inter', sans-serif; /* Fuente más moderna y legible */
+            margin: 0; /* Eliminar margen por defecto */
+            padding: 0; /* Eliminar padding por defecto */
+            background-color: #f0f2f5; /* Un fondo ligeramente más suave */
+            color: #333;
             display: flex;
             flex-direction: column;
-            min-height: 100vh; /* Asegura que el contenido ocupe al menos toda la altura de la pantalla */
+            min-height: 100vh; /* Asegurar que el contenido llene la altura */
         }
+
         /* Contenedor principal del formulario */
         .container {
-            max-width: 650px;
-            margin: 30px auto; /* Margen superior/inferior y centrado horizontal */
-            padding: 25px 30px;
-            background: #ffffff; /* Fondo blanco para el contenido */
-            border-radius: 10px; /* Bordes redondeados */
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1); /* Sombra sutil */
-            flex-grow: 1; /* Permite que el contenedor crezca si el contenido es poco */
+            background-color: #ffffff;
+            padding: 25px 30px; /* Más padding */
+            border-radius: 12px; /* Bordes más redondeados */
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); /* Sombra más pronunciada */
+            max-width: 650px; /* Un poco más ancho */
+            width: 90%; /* Responsivo */
+            margin: 40px auto; /* Margen superior e inferior */
+            flex-grow: 1; /* Para que el contenido ocupe espacio si la página es corta */
         }
-        /* Estilo para el título principal */
+
+        /* Título principal */
         h1 {
-            color: #0056b3; /* Un azul institucional */
             text-align: center;
-            margin-bottom: 25px;
+            color: #2c3e50; /* Un color más oscuro y profesional */
+            margin-bottom: 25px; /* Más espacio debajo del título */
+            font-size: 2em; /* Tamaño de fuente más grande */
         }
-        /* Estilos para las etiquetas de los campos del formulario */
+
+        /* Estilos para las etiquetas de los campos */
         label {
             display: block;
-            margin-bottom: 8px;
-            font-weight: bold;
-            color: #495057; /* Un gris oscuro para las etiquetas */
+            margin-bottom: 10px; /* Más espacio */
+            font-weight: 600; /* Un poco más de peso */
+            color: #555;
         }
-        /* Estilos para los campos de texto y selectores */
+
+        /* Estilos para los campos de entrada de texto, textarea y select */
         input[type="text"],
+        textarea,
         select {
-            width: 100%;
-            padding: 12px;
-            margin-bottom: 20px;
-            border: 1px solid #ced4da; /* Borde gris claro */
-            border-radius: 5px;
-            box-sizing: border-box; /* Para que el padding no afecte el ancho total */
-            transition: border-color 0.3s ease;
+            width: 100%; /* Ocupar todo el ancho disponible */
+            padding: 12px; /* Padding más generoso */
+            margin-bottom: 25px; /* Más espacio inferior */
+            border: 1px solid #d1d5db; /* Borde más suave */
+            border-radius: 8px; /* Bordes más redondeados */
+            box-sizing: border-box; /* Modelo de caja estándar */
+            font-size: 1em; /* Tamaño de fuente consistente */
+            transition: border-color 0.3s ease, box-shadow 0.3s ease; /* Transiciones suaves */
         }
         input[type="text"]:focus,
+        textarea:focus,
         select:focus {
-            border-color: #007bff; /* Borde azul al enfocar */
-            outline: none; /* Quitar el outline por defecto */
+            border-color: #4CAF50; /* Color de borde al enfocar */
+            box-shadow: 0 0 0 3px rgba(76, 175, 80, 0.2); /* Sombra al enfocar */
+            outline: none; /* Quitar outline por defecto */
         }
-        /* Grupo para los botones de radio de valoración */
-        .rating-group {
-            display: flex;
-            justify-content: space-around; /* Distribuye el espacio entre los elementos */
+
+        /* Estilo específico para textarea */
+        textarea {
+            resize: vertical;
+            min-height: 100px; /* Altura mínima mayor */
+        }
+
+        /* Contenedor para la escala de valoración */
+        .escala-valoracion-container {
             margin-bottom: 25px;
-            padding: 10px;
-            background-color: #f8f9fa;
-            border-radius: 5px;
         }
-        .rating-group label {
+        .escala-valoracion {
+            display: flex;
+            justify-content: space-between; /* Distribuir mejor los elementos */
+            align-items: center;
+            background-color: #f9f9f9; /* Fondo ligero para destacar la sección */
+            padding: 15px;
+            border-radius: 8px;
+            border: 1px solid #e0e0e0;
+        }
+        .escala-valoracion label {
             margin-bottom: 0;
             font-weight: normal;
             display: flex;
             flex-direction: column;
             align-items: center;
             cursor: pointer;
-            color: #495057;
+            color: #444;
+            font-size: 0.95em;
         }
-        input[type="radio"] {
-            margin-top: 5px; /* Espacio entre el texto y el botón de radio */
-            transform: scale(1.2); /* Hacer los botones de radio un poco más grandes */
-        }
-        /* Estilo para el botón de envío */
-        button[type="submit"] {
-            display: block;
-            width: 100%;
-            padding: 12px 18px;
-            background-color: #28a745; /* Un verde para acciones positivas */
-            color: white;
-            border: none;
-            border-radius: 5px;
+        .escala-valoracion input[type="radio"] {
+            margin-bottom: 8px; /* Más espacio entre radio y texto */
+            transform: scale(1.2); /* Hacer los radios un poco más grandes */
             cursor: pointer;
-            font-size: 17px;
+        }
+         /* Estilo para el radio button seleccionado */
+        .escala-valoracion input[type="radio"]:checked + span {
             font-weight: bold;
-            transition: background-color 0.3s ease;
+            color: #4CAF50;
+        }
+        .escala-valoracion label span { /* Para el texto numérico */
+            margin-top: 4px;
+        }
+
+
+        /* Botón de envío */
+        button[type="submit"] {
+            background-color: #4CAF50; /* Color verde principal */
+            color: white;
+            padding: 14px 22px; /* Padding más generoso */
+            border: none;
+            border-radius: 8px; /* Bordes más redondeados */
+            cursor: pointer;
+            font-size: 1.1em; /* Tamaño de fuente mayor */
+            width: 100%;
+            transition: background-color 0.3s ease, transform 0.1s ease; /* Transiciones suaves */
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
         }
         button[type="submit"]:hover {
-            background-color: #218838; /* Verde más oscuro al pasar el ratón */
+            background-color: #45a049; /* Color más oscuro al pasar el ratón */
         }
-        /* Contenedor para los mensajes de feedback (éxito/error) */
-        #mensaje {
-            margin-top: 20px;
-            padding: 12px;
-            border-radius: 5px;
+        button[type="submit"]:active {
+            background-color: #3e8e41; /* Color al hacer clic */
+            transform: translateY(1px); /* Efecto de presión */
+        }
+
+
+        /* Mensajes de estado (éxito/error) */
+        #statusMessage {
+            margin-top: 25px;
+            padding: 15px; /* Padding más generoso */
+            border-radius: 8px; /* Bordes más redondeados */
             text-align: center;
-            font-weight: bold;
+            font-size: 1em;
+            animation: fadeIn 0.5s ease; /* Animación de aparición */
         }
-        /* Estilo para mensajes de éxito */
-        .mensaje-exito {
-            background-color: #d4edda; /* Fondo verde claro */
-            color: #155724; /* Texto verde oscuro */
-            border: 1px solid #c3e6cb;
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
         }
-        /* Estilo para mensajes de error */
-        .mensaje-error {
-            background-color: #f8d7da; /* Fondo rojo claro */
-            color: #721c24; /* Texto rojo oscuro */
-            border: 1px solid #f5c6cb;
+
+        .success {
+            background-color: #e6ffed; /* Fondo verde claro */
+            color: #2f6f4e; /* Texto verde oscuro */
+            border: 1px solid #b7e4c7; /* Borde verde */
         }
+        .error {
+            background-color: #ffeeee; /* Fondo rojo claro */
+            color: #a73434; /* Texto rojo oscuro */
+            border: 1px solid #f5c6cb; /* Borde rojo */
+        }
+        .info { /* Para el mensaje "Enviando..." */
+            background-color: #e0f2fe;
+            color: #0c5460;
+            border: 1px solid #bde0fe;
+        }
+        .hidden {
+            display: none;
+        }
+
     </style>
 </head>
 <body>
     <div class="container">
-        <h1>Encuesta de Utilidad</h1>
-        <form id="encuestaForm">
+        <h1>Formulario de opinión</h1>
+        <form id="feedbackForm">
             <div>
-                <label for="nombre">Nombre:</label>
-                <input type="text" id="nombre" name="nombre" required placeholder="Escribe tu nombre aquí">
+                <label for="nombre">Nombre (opcional):</label>
+                <input type="text" id="nombre" name="nombre" placeholder="Escribe tu nombre si lo deseas">
             </div>
 
             <div>
-                <label>¿Te ha sido útil esta información? (0=Nada, 4=Mucho)</label>
-                <div class="rating-group">
-                    <label>0 <input type="radio" name="valoracion" value="0" required></label>
-                    <label>1 <input type="radio" name="valoracion" value="1"></label>
-                    <label>2 <input type="radio" name="valoracion" value="2"></label>
-                    <label>3 <input type="radio" name="valoracion" value="3"></label>
-                    <label>4 <input type="radio" name="valoracion" value="4"></label>
+                <label for="sugerencias">Sugerencias:</label>
+                <textarea id="sugerencias" name="sugerencias" rows="5" placeholder="Escribe aquí tus comentarios o sugerencias..." required></textarea>
+            </div>
+
+            <div class="escala-valoracion-container">
+                <label>¿Te ha sido útil esta información?</label>
+                <div class="escala-valoracion">
+                    <label><input type="radio" name="valoracionUtilidad" value="0" required><span>0 (Nada)</span></label>
+                    <label><input type="radio" name="valoracionUtilidad" value="1"><span>1</span></label>
+                    <label><input type="radio" name="valoracionUtilidad" value="2"><span>2</span></label>
+                    <label><input type="radio" name="valoracionUtilidad" value="3"><span>3</span></label>
+                    <label><input type="radio" name="valoracionUtilidad" value="4"><span>4 (Mucho)</span></label>
                 </div>
             </div>
 
-            <button type="submit">Enviar Respuesta</button>
+            <button type="submit" id="submitButton">Enviar opinión</button>
         </form>
-        <div id="mensaje"></div> <!-- Aquí se mostrarán los mensajes de éxito o error -->
+        <div id="statusMessage" class="hidden"></div>
     </div>
 
+    <!-- El pie de página ha sido eliminado -->
+
     <script>
-        // Seleccionar el formulario y el div para mensajes
-        const formulario = document.getElementById('encuestaForm');
-        const mensajeDiv = document.getElementById('mensaje');
-        
-        // URL de tu Web App de Google Apps Script (reemplazada con la tuya)
-        const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycby73CkrOVCRo2xcKvpfesDMDmSTqaUDYKujamnDoRBNN0Vn6MXbluEFcVRm6KFkTsyB/exec';
+        const scriptURL = 'https://script.google.com/macros/s/AKfycbwKS_HdmZoF2oAs5xxs6YLN77dvDhV7y3vsiyKKEqaCQCdJV7jNX2h9Qb5KfZAdS0MM/exec';
+        const form = document.getElementById('feedbackForm');
+        const statusMessage = document.getElementById('statusMessage');
+        const submitButton = document.getElementById('submitButton');
 
-        // Añadir un 'escuchador' para el evento 'submit' del formulario
-        formulario.addEventListener('submit', function(evento) {
-            evento.preventDefault(); // Prevenir el envío por defecto del formulario que recargaría la página
+        form.addEventListener('submit', e => {
+            e.preventDefault(); // Prevenir el envío tradicional del formulario
 
-            // Obtener los valores de los campos del formulario
-            const nombreUsuario = document.getElementById('nombre').value.trim();
-            const valoracionSeleccionada = document.querySelector('input[name="valoracion"]:checked');
+            // Mostrar mensaje de "Enviando..." y deshabilitar botón
+            statusMessage.textContent = 'Enviando...';
+            statusMessage.className = 'info'; // Clase para estilo de "enviando"
+            submitButton.disabled = true;
+            submitButton.style.opacity = '0.7';
+
+
+            const formData = new FormData(form);
             
-            // Validación simple: asegurar que el nombre no esté vacío
-            if (!nombreUsuario) {
-                mostrarMensaje('Por favor, introduce tu nombre.', 'error');
-                return; // Detener la ejecución si el nombre está vacío
-            }
+            // Si el campo de nombre está vacío, se envía como "Anónimo" (manejado en Apps Script)
+            // if (!formData.get('nombre')) {
+            // }
 
-            // Asegurar que se haya seleccionado una valoración
-            if (!valoracionSeleccionada) {
-                mostrarMensaje('Por favor, selecciona una valoración.', 'error');
-                return; // Detener la ejecución si no hay valoración
-            }
-            const valoracionUsuario = valoracionSeleccionada.value;
+            fetch(scriptURL, { method: 'POST', body: formData })
+                .then(response => {
+                    if (!response.ok) { // Si la respuesta HTTP no es OK (ej. 404, 500)
+                        // Intentamos parsear como JSON si es posible, o usamos el statusText
+                        return response.json().catch(() => {
+                            throw new Error(`Error HTTP ${response.status}: ${response.statusText}`);
+                        }).then(errorData => {
+                             // Si el Apps Script devuelve un JSON con status error
+                            if (errorData && errorData.status === 'error') {
+                                throw new Error(errorData.message || 'Error desconocido desde el script.');
+                            }
+                            throw new Error(`Error HTTP ${response.status}: ${response.statusText}`);
+                        });
+                    }
+                    return response.json(); // Parsear la respuesta JSON
+                })
+                .then(data => {
+                    console.log('Respuesta del script:', data);
+                    if (data.status === "success") {
+                        statusMessage.textContent = data.message || '¡Gracias! Tu opinión ha sido enviada.';
+                        statusMessage.className = 'success'; // Clase para estilo de éxito
+                        form.reset(); // Limpiar el formulario
+                    } else {
+                        // Si el script devuelve un JSON con status error (pero la HTTP fue OK)
+                        statusMessage.textContent = 'Error: ' + (data.message || 'No se pudo procesar la solicitud.');
+                        statusMessage.className = 'error';
+                    }
+                })
+                .catch(error => {
+                    console.error('Error en fetch:', error);
+                    statusMessage.textContent = 'Error al enviar: ' + error.message + '. Por favor, inténtalo de nuevo.';
+                    statusMessage.className = 'error'; // Clase para estilo de error
+                })
+                .finally(() => {
+                    // Habilitar el botón nuevamente
+                    submitButton.disabled = false;
+                    submitButton.style.opacity = '1';
 
-            // Crear el objeto de datos para enviar
-            const datosParaEnviar = {
-                nombre: nombreUsuario,
-                valoracion: parseInt(valoracionUsuario) // Convertir valoración a número entero
-            };
-
-            // Mostrar mensaje de "Enviando..."
-            mensajeDiv.textContent = 'Enviando datos...';
-            mensajeDiv.className = ''; // Limpiar clases de estilo previas del mensaje
-
-            // Usar la API Fetch para enviar los datos al script de Google
-            fetch(SCRIPT_URL, {
-                method: 'POST',
-                body: JSON.stringify(datosParaEnviar), // Convertir el objeto a una cadena JSON
-                headers: {
-                    'Content-Type': 'text/plain;charset=utf-8', 
-                }
-            })
-            .then(respuesta => {
-                if (!respuesta.ok && respuesta.type !== 'opaque') { 
-                    return respuesta.json().then(errorData => {
-                        throw errorData || new Error(`Error HTTP ${respuesta.status}`);
-                    });
-                }
-                if (respuesta.type === 'opaque') { 
-                    return { status: "success", message: "Datos enviados (respuesta opaca por 'no-cors'). Revisa la hoja de cálculo." };
-                }
-                return respuesta.json();
-            })
-            .then(resultado => {
-                console.log('Respuesta del script:', resultado);
-                if (resultado && resultado.status === 'success') {
-                    mostrarMensaje('¡Gracias! Tus datos han sido enviados correctamente.', 'exito');
-                    formulario.reset(); 
-                    document.getElementById('nombre').focus(); 
-                } else {
-                    mostrarMensaje('Error: ' + (resultado.message || 'No se pudieron enviar los datos. Intenta de nuevo.'), 'error');
-                }
-            })
-            .catch(error => {
-                console.error('Error al enviar el formulario:', error);
-                let mensajeDeError = 'Hubo un problema al enviar tu respuesta.';
-                if (error && error.message) {
-                    mensajeDeError += ` Detalles: ${error.message}`;
-                } else if (typeof error === 'object' && error.error && error.error.message) { 
-                    mensajeDeError += ` Detalles del servidor: ${error.error.message}`;
-                }
-                mostrarMensaje(mensajeDeError, 'error');
-            });
+                    // Ocultar el mensaje después de unos segundos, solo si no es un error persistente
+                    if (!statusMessage.classList.contains('error')) {
+                         setTimeout(() => {
+                            statusMessage.classList.add('hidden');
+                            statusMessage.textContent = '';
+                            statusMessage.className = '';
+                        }, 7000); // Un poco más de tiempo para leer el mensaje
+                    }
+                });
         });
-
-        // Función para mostrar mensajes de feedback al usuario
-        function mostrarMensaje(texto, tipo) {
-            mensajeDiv.textContent = texto;
-            if (tipo === 'exito') {
-                mensajeDiv.className = 'mensaje-exito';
-            } else if (tipo === 'error') {
-                mensajeDiv.className = 'mensaje-error';
-            } else {
-                mensajeDiv.className = ''; 
-            }
-        }
     </script>
+
 </body>
 </html>
