@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Encuesta de Utilidad</title>
+    <style>
+        /* Estilos generales del cuerpo del documento */
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 0;
+            background-color: #f8f9fa; /* Un fondo gris claro */
+            color: #343a40; /* Color de texto principal oscuro */
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh; /* Asegura que el contenido ocupe al menos toda la altura de la pantalla */
+        }
+        /* Contenedor principal del formulario */
+        .container {
+            max-width: 650px;
+            margin: 30px auto; /* Margen superior/inferior y centrado horizontal */
+            padding: 25px 30px;
+            background: #ffffff; /* Fondo blanco para el contenido */
+            border-radius: 10px; /* Bordes redondeados */
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1); /* Sombra sutil */
+            flex-grow: 1; /* Permite que el contenedor crezca si el contenido es poco */
+        }
+        /* Estilo para el título principal */
+        h1 {
+            color: #0056b3; /* Un azul institucional */
+            text-align: center;
+            margin-bottom: 25px;
+        }
+        /* Estilos para las etiquetas de los campos del formulario */
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+            color: #495057; /* Un gris oscuro para las etiquetas */
+        }
+        /* Estilos para los campos de texto y selectores */
+        input[type="text"],
+        select {
+            width: 100%;
+            padding: 12px;
+            margin-bottom: 20px;
+            border: 1px solid #ced4da; /* Borde gris claro */
+            border-radius: 5px;
+            box-sizing: border-box; /* Para que el padding no afecte el ancho total */
+            transition: border-color 0.3s ease;
+        }
+        input[type="text"]:focus,
+        select:focus {
+            border-color: #007bff; /* Borde azul al enfocar */
+            outline: none; /* Quitar el outline por defecto */
+        }
+        /* Grupo para los botones de radio de valoración */
+        .rating-group {
+            display: flex;
+            justify-content: space-around; /* Distribuye el espacio entre los elementos */
+            margin-bottom: 25px;
+            padding: 10px;
+            background-color: #f8f9fa;
+            border-radius: 5px;
+        }
+        .rating-group label {
+            margin-bottom: 0;
+            font-weight: normal;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            cursor: pointer;
+            color: #495057;
+        }
+        input[type="radio"] {
+            margin-top: 5px; /* Espacio entre el texto y el botón de radio */
+            transform: scale(1.2); /* Hacer los botones de radio un poco más grandes */
+        }
+        /* Estilo para el botón de envío */
+        button[type="submit"] {
+            display: block;
+            width: 100%;
+            padding: 12px 18px;
+            background-color: #28a745; /* Un verde para acciones positivas */
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 17px;
+            font-weight: bold;
+            transition: background-color 0.3s ease;
+        }
+        button[type="submit"]:hover {
+            background-color: #218838; /* Verde más oscuro al pasar el ratón */
+        }
+        /* Contenedor para los mensajes de feedback (éxito/error) */
+        #mensaje {
+            margin-top: 20px;
+            padding: 12px;
+            border-radius: 5px;
+            text-align: center;
+            font-weight: bold;
+        }
+        /* Estilo para mensajes de éxito */
+        .mensaje-exito {
+            background-color: #d4edda; /* Fondo verde claro */
+            color: #155724; /* Texto verde oscuro */
+            border: 1px solid #c3e6cb;
+        }
+        /* Estilo para mensajes de error */
+        .mensaje-error {
+            background-color: #f8d7da; /* Fondo rojo claro */
+            color: #721c24; /* Texto rojo oscuro */
+            border: 1px solid #f5c6cb;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Encuesta de Utilidad</h1>
+        <form id="encuestaForm">
+            <div>
+                <label for="nombre">Nombre:</label>
+                <input type="text" id="nombre" name="nombre" required placeholder="Escribe tu nombre aquí">
+            </div>
+
+            <div>
+                <label>¿Te ha sido útil esta información? (0=Nada, 4=Mucho)</label>
+                <div class="rating-group">
+                    <label>0 <input type="radio" name="valoracion" value="0" required></label>
+                    <label>1 <input type="radio" name="valoracion" value="1"></label>
+                    <label>2 <input type="radio" name="valoracion" value="2"></label>
+                    <label>3 <input type="radio" name="valoracion" value="3"></label>
+                    <label>4 <input type="radio" name="valoracion" value="4"></label>
+                </div>
+            </div>
+
+            <button type="submit">Enviar Respuesta</button>
+        </form>
+        <div id="mensaje"></div> <!-- Aquí se mostrarán los mensajes de éxito o error -->
+    </div>
+
+    <script>
+        // Seleccionar el formulario y el div para mensajes
+        const formulario = document.getElementById('encuestaForm');
+        const mensajeDiv = document.getElementById('mensaje');
+        
+        // URL de tu Web App de Google Apps Script (reemplazada con la tuya)
+        const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycby73CkrOVCRo2xcKvpfesDMDmSTqaUDYKujamnDoRBNN0Vn6MXbluEFcVRm6KFkTsyB/exec';
+
+        // Añadir un 'escuchador' para el evento 'submit' del formulario
+        formulario.addEventListener('submit', function(evento) {
+            evento.preventDefault(); // Prevenir el envío por defecto del formulario que recargaría la página
+
+            // Obtener los valores de los campos del formulario
+            const nombreUsuario = document.getElementById('nombre').value.trim();
+            const valoracionSeleccionada = document.querySelector('input[name="valoracion"]:checked');
+            
+            // Validación simple: asegurar que el nombre no esté vacío
+            if (!nombreUsuario) {
+                mostrarMensaje('Por favor, introduce tu nombre.', 'error');
+                return; // Detener la ejecución si el nombre está vacío
+            }
+
+            // Asegurar que se haya seleccionado una valoración
+            if (!valoracionSeleccionada) {
+                mostrarMensaje('Por favor, selecciona una valoración.', 'error');
+                return; // Detener la ejecución si no hay valoración
+            }
+            const valoracionUsuario = valoracionSeleccionada.value;
+
+            // Crear el objeto de datos para enviar
+            const datosParaEnviar = {
+                nombre: nombreUsuario,
+                valoracion: parseInt(valoracionUsuario) // Convertir valoración a número entero
+            };
+
+            // Mostrar mensaje de "Enviando..."
+            mensajeDiv.textContent = 'Enviando datos...';
+            mensajeDiv.className = ''; // Limpiar clases de estilo previas del mensaje
+
+            // Usar la API Fetch para enviar los datos al script de Google
+            fetch(SCRIPT_URL, {
+                method: 'POST',
+                body: JSON.stringify(datosParaEnviar), // Convertir el objeto a una cadena JSON
+                headers: {
+                    'Content-Type': 'text/plain;charset=utf-8', 
+                }
+            })
+            .then(respuesta => {
+                if (!respuesta.ok && respuesta.type !== 'opaque') { 
+                    return respuesta.json().then(errorData => {
+                        throw errorData || new Error(`Error HTTP ${respuesta.status}`);
+                    });
+                }
+                if (respuesta.type === 'opaque') { 
+                    return { status: "success", message: "Datos enviados (respuesta opaca por 'no-cors'). Revisa la hoja de cálculo." };
+                }
+                return respuesta.json();
+            })
+            .then(resultado => {
+                console.log('Respuesta del script:', resultado);
+                if (resultado && resultado.status === 'success') {
+                    mostrarMensaje('¡Gracias! Tus datos han sido enviados correctamente.', 'exito');
+                    formulario.reset(); 
+                    document.getElementById('nombre').focus(); 
+                } else {
+                    mostrarMensaje('Error: ' + (resultado.message || 'No se pudieron enviar los datos. Intenta de nuevo.'), 'error');
+                }
+            })
+            .catch(error => {
+                console.error('Error al enviar el formulario:', error);
+                let mensajeDeError = 'Hubo un problema al enviar tu respuesta.';
+                if (error && error.message) {
+                    mensajeDeError += ` Detalles: ${error.message}`;
+                } else if (typeof error === 'object' && error.error && error.error.message) { 
+                    mensajeDeError += ` Detalles del servidor: ${error.error.message}`;
+                }
+                mostrarMensaje(mensajeDeError, 'error');
+            });
+        });
+
+        // Función para mostrar mensajes de feedback al usuario
+        function mostrarMensaje(texto, tipo) {
+            mensajeDiv.textContent = texto;
+            if (tipo === 'exito') {
+                mensajeDiv.className = 'mensaje-exito';
+            } else if (tipo === 'error') {
+                mensajeDiv.className = 'mensaje-error';
+            } else {
+                mensajeDiv.className = ''; 
+            }
+        }
+    </script>
+</body>
+</html>
